@@ -1,0 +1,6 @@
+{
+  "directory": "www/lib",
+  "proxy":"http://e3021518:Ankita31@10.74.151.6:8080",
+  "https-proxy":"http://e3021518:Ankita31@10.74.151.6:8080",
+  "strict-ssl": false
+}

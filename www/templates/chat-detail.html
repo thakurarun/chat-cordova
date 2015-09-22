@@ -5,13 +5,39 @@
   The Friends service returns an array of friend data
 -->
 <ion-view view-title="{{chat.name}}">
-  <ion-content class="padding">
+  <ion-content class="padding"  delegate-handle="userMessageScroll">
         <ion-list>
                 <ion-item ng-repeat="chat in chat.chat">
-                        <p ng-class="chat.me ? 'text-left' : 'text-right'">
-                            {{chat.value}}
-                        </p>
+
+                    <div ng-if="chat.me === 1">
+                      
+                      <div class="chat-bubble left">
+      
+                          <div class="message" autolinker>
+                               {{chat.value}}
+                          </div>
+                          </div>
+                        </div>
+                     <div ng-if="chat.me === 0">
+                      <div class="chat-bubble right">
+                          <div class="message" autolinker>
+                               {{chat.value}}
+                          </div>
+                         </div></div>
+                    <div class="cf"></div>
                 </ion-item>
-    </ion-list>
+        </ion-list>
   </ion-content>
+     <form name="sendMessageForm" novalidate>
+         <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
+                  <label class="item-input-wrapper">
+                      <textarea ng-model="message.value" placeholder="Send a message..." required minlength="1" maxlength="1500" ></textarea>
+                  </label>
+                  <div class="footer-btn-wrap">
+                    <button class="button button-icon icon ion-android-send footer-btn"  ng-click="sendMessage(message)"
+                        ng-disabled="!message.value || message.value === ''">
+                    </button>
+                  </div>
+              </ion-footer-bar>
+         </form>
 </ion-view>

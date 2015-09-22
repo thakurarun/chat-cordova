@@ -15,21 +15,61 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
-
+  console.log('chats control called..')
   $scope.chats = Chats.all();
   $scope.remove = function(chat) {
     Chats.remove(chat);
   };
 })
 
-.controller('ChatDetailCtrl', function ($scope, $stateParams, Chats) {
-    console.log($stateParams.chatId + ":" + $stateParams.userId)
+.controller('ChatDetailCtrl', function ($scope, $stateParams, $ionicScrollDelegate, $timeout, $interval, Chats) {
+    var viewScroll = $ionicScrollDelegate.$getByHandle('userMessageScroll');
+    
+    $scope.$on('$ionicView.enter', function (e) {
+        $timeout(function () {
+            viewScroll.scrollBottom();
+        }, 0);
+    });
+
     if ($stateParams.chatId == 0) { //coming from contacts..check first if chat exist with same user...
         $scope.chat = Chats.getWithUserId($stateParams.userId);
     } else {
         $scope.chat = Chats.get($stateParams.chatId); //simply find existing chat with chatId
     }
-    console.log($scope.chat)
+    $scope.message = {
+        toUserId : $scope.chat.userId
+    };
+    $scope.counter = 120;
+    $scope.sendMessage = function (msg) {
+        var temp = this.counter++;
+        this.chat.chat.push({
+            id: temp,
+            me : 1, 
+            another: 0,
+            value: msg.value
+        });
+        this.chat.lastText = msg.value;
+        msg.value = "";
+        $timeout(function () {
+            viewScroll.scrollBottom(true);
+        }, 0);
+        var self = this;
+        $timeout(function () {
+            var temp = self.counter++;
+            self.chat.chat.push({
+                id: temp,
+                me : 0, 
+                another: 1,
+                value: "in response"
+            });
+            self.chat.lastText = msg.value;
+            $timeout(function () {
+                viewScroll.scrollBottom(true);
+            }, 0);
+        }, 3000);
+        ///save msssage to db...TODO
+    }
+
 })
 
 .controller('AccountCtrl', function($scope) {

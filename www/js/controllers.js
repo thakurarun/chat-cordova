@@ -22,15 +22,13 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('ChatDetailCtrl', function ($scope, $stateParams, $ionicScrollDelegate, $timeout, $interval, Chats) {
+.controller('ChatDetailCtrl', function ($scope, $stateParams, $ionicScrollDelegate, $timeout, $interval, Chats, Socket) {
     var viewScroll = $ionicScrollDelegate.$getByHandle('userMessageScroll');
-    
     $scope.$on('$ionicView.enter', function (e) {
         $timeout(function () {
             viewScroll.scrollBottom();
         }, 0);
     });
-
     if ($stateParams.chatId == 0) { //coming from contacts..check first if chat exist with same user...
         $scope.chat = Chats.getWithUserId($stateParams.userId);
     } else {
@@ -41,6 +39,7 @@ angular.module('starter.controllers', [])
     };
     $scope.counter = 120;
     $scope.sendMessage = function (msg) {
+        Socket.initiateChat(msg);
         var temp = this.counter++;
         this.chat.chat.push({
             id: temp,

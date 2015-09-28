@@ -1,5 +1,13 @@
 angular.module('starter.controllers', [])
 
+.controller('SignUpCtrl', function ($scope) {
+    $scope.model = {}
+    $scope.RegisterContact = function (model) {
+        console.log(model.ContactNumber);
+
+    }
+})
+
 .controller('DashCtrl', function ($scope, $state,Chats) {
     $scope.contacts = Chats.getAllContacts();
     $scope.initiateChat = function (data) {

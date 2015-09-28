@@ -51,7 +51,7 @@ app.factory('Chats', function () {
 app.factory('Socket', function () {
     return {
         initiateChat : function (data,chat) {
-            var socket = io("http://localhost:3000/", { query: 'name=' + data.toUserId }); //"query" :: add it to handshake while polling...
+            var socket = io("http://localhost:5100/", { query: 'name=' + data.toUserId }); //"query" :: add it to handshake while polling...
             socket.on(data.toUserId, function (response) {
                 chat.chat.push({
                     id: 0,
